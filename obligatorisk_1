@@ -1,0 +1,54 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep 26 15:38:11 2025
+
+@author: Maria
+"""
+
+# -*- coding: utf-8 -*-
+
+STANDARD_KM_PER_AAR = 10000
+DAGER_PER_AAR = 365
+
+FORSIKRING_ELBIL = 5000
+FORSIKRING_BENSIN = 7500
+TFA_PER_DAG = 8.38
+
+KWH_PER_KM_ELBIL = 0.2
+KWH_PRIS = 2.00
+KOST_EL_ENERGI = KWH_PER_KM_ELBIL * KWH_PRIS  # 0.40 kr/km
+KOST_BENSIN_PER_KM = 1.0
+
+BOM_EL = 0.1
+BOM_BEN = 0.3
+
+s = input("Km per år (Enter = 10000): ").strip()
+if s == "":
+    km = STANDARD_KM_PER_AAR
+else:
+    try:
+        km = int(s)
+        if km < 0:
+            print("Km kan ikke være negativ tall, bruker da 10000.")
+            km = STANDARD_KM_PER_AAR
+    except ValueError:
+        print("Det er ugyldig verdi, bruker 10000.")
+        km = STANDARD_KM_PER_AAR
+
+trafikkavgift = TFA_PER_DAG * DAGER_PER_AAR
+
+el_total = FORSIKRING_ELBIL + trafikkavgift + (KOST_EL_ENERGI + BOM_EL) * km
+ben_total = FORSIKRING_BENSIN + trafikkavgift + (KOST_BENSIN_PER_KM + BOM_BEN) * km
+
+print("\nKOSTNADSRAPPORT")
+print("Km per år:", km)
+print("Elbil:", round(el_total, 2), "kr")
+print("Bensinbil:", round(ben_total, 2), "kr")
+
+diff = ben_total - el_total
+if diff > 0:
+    print("Elbil er billigere med:", round(diff, 2), "kr per år")
+elif diff < 0:
+    print("Bensinbil er billigere med:", round(-diff, 2), "kr per år")
+else:
+    print("Kostnadene er like i år.")
